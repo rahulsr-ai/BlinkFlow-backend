@@ -57,7 +57,6 @@ https://github.com/rahulsr-ai/BlinkFlow-frontend.git
 
 ```bash
 git clone https://github.com/rahulsr-ai/BlinkFlow-frontend.git
-cd <project-folder>
 ```
 
 ---
@@ -186,4 +185,3 @@ POST /api/save-result
 Developed by Rahul
 Feel free to explore, modify, and improve 🚀
 
----
