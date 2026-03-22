@@ -25,7 +25,6 @@ export async function answerFrontendPrompt(req: Request, res: Response) {
             return res.status(400).json({ error: true, msg: "Prompt is missing" });
         }
 
-        // 1. Pehle DB mein check karo (Caching Logic)
         const existingData = await UserPrompt.findOne({ prompt: prompt.toLowerCase().trim() });
 
         if (existingData) {
@@ -49,6 +48,7 @@ export async function answerFrontendPrompt(req: Request, res: Response) {
 
         });
 
+
         const aiResponse = completion.choices[0]!.message.content;
 
 
@@ -71,17 +71,16 @@ export async function answerFrontendPrompt(req: Request, res: Response) {
 
 export async function saveResultToDB(req: Request, res: Response) {
     try {
-        const { result, prompt } = req.body; 
+        const { result, prompt } = req.body;
 
         if (!result || !prompt) {
-            return res.status(400).json({ 
-                error: true, 
-                msg: "Please provide both result and user prompt" 
+            return res.status(400).json({
+                error: true,
+                msg: "Please provide both result and user prompt"
             });
         }
 
-        //  Check for existing data to prevent duplicates
-        // const normalizedResult = result.toLowerCase().trim();
+
         const existingData = await UserPrompt.findOne({ response: result });
 
         if (existingData) {
@@ -92,23 +91,26 @@ export async function saveResultToDB(req: Request, res: Response) {
             });
         }
 
+
         // Save new entry
         const saveResultIntoDB = await UserPrompt.create({
             prompt,
-            response: result 
+            response: result
         });
 
-        return res.status(201).json({ 
-            error: false, 
+
+
+        return res.status(201).json({
+            error: false,
             msg: 'Response saved successfully!',
-            data: saveResultIntoDB 
+            data: saveResultIntoDB
         });
 
     } catch (error) {
-        console.error("DB Error:", error); 
-        return res.status(500).json({ 
-            error: true, 
-            msg: 'Failed to save result in DB' 
+        console.error("DB Error:", error);
+        return res.status(500).json({
+            error: true,
+            msg: 'Failed to save result in DB'
         });
     }
 }
